@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>풍물 MBTI</title>
 <style>
 *{
@@ -11,42 +12,47 @@
 body{
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
   margin:0;
-  padding:16px;
-  background:#fafafa;
+  padding:20px 16px 32px;
+  background: linear-gradient(180deg,#eaf2ff,#ffffff);
 }
 
-h2{
-  text-align:center;
-}
-
+/* 질문 카드 느낌 */
 #question{
-  font-size:1.1rem;
-  margin:20px 0;
+  font-size:1.2rem;
+  margin:16px 0 10px;
   text-align:center;
-  line-height:1.5;
+  line-height:1.6;
+  font-weight:600;
 }
 
+/* 버튼 영역 */
 #answers{
   display:flex;
   flex-direction:column;
   gap:12px;
+  margin-top:16px;
 }
 
 button{
-  padding:16px;
+  padding:14px 14px;
   font-size:1rem;
-  border-radius:12px;
+  border-radius:18px;   /* 둥근 네모 */
   border:none;
-  background:#2f80ed;
-  color:white;
+  background:#ffffff;
+  color:#333;
   cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* 버튼 너무 길어 보이지 않게 */
+button{
+  max-width:520px;
+  margin:0 auto;
 }
 
 button:active{
-  transform:scale(0.98);
+  transform:scale(0.97);
 }
-
-
 .result-box{
   text-align:center;
 }
@@ -70,12 +76,40 @@ button:active{
   max-width:160px;
   border-radius:12px;
 }
+#progressText{
+  text-align:center;
+  font-size:0.9rem;
+  color:#555;
+  margin-top:6px;
+}
+
+.progress-bar{
+  width:100%;
+  max-width:520px;
+  height:10px;
+  background:#dde6ff;
+  border-radius:10px;
+  margin:8px auto 14px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:#4c7dff;
+  transition:width 0.3s;
+}
 </style></head>
 <body>
 
 <h2>🎓 한성대 탈 풍물 MBTI</h2>
-
 !!어울리는 악기를 찾아드려요!!
+<div id="progressText"></div>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+
 
 <div id="question"></div>
 <div id="answers"></div>
@@ -149,14 +183,22 @@ const score = {
   sogo: 0
 };
 
+
 const qDiv = document.getElementById("question");
 const aDiv = document.getElementById("answers");
+
+const progressText = document.getElementById("progressText");
+const progressFill = document.getElementById("progressFill"); 
 
 function showQuestion() {
   if (index >= questions.length) {
     showResult();
     return;
   }
+
+progressText.innerText = `${index + 1} / ${questions.length} 문항`;
+progressFill.style.width =
+  ((index) / questions.length) * 100 + "%";
 
   qDiv.innerText = questions[index].q;
   aDiv.innerHTML = "";
@@ -225,6 +267,10 @@ function showQuestion() {
   `;
 
   aDiv.innerHTML = "";
+
+progressText.style.display = "none";
+document.querySelector(".progress-bar").style.display = "none";
+
 }
 showQuestion();
 </script>
