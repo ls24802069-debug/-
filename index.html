@@ -4,13 +4,78 @@
 <meta charset="UTF-8">
 <title>풍물 MBTI</title>
 <style>
-body { font-family: sans-serif; max-width: 600px; margin: auto; }
-button { display: block; margin: 8px 0; padding: 10px; width: 100%; }
-</style>
-</head>
+*{
+  box-sizing: border-box;
+}
+
+body{
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  margin:0;
+  padding:16px;
+  background:#fafafa;
+}
+
+h2{
+  text-align:center;
+}
+
+#question{
+  font-size:1.1rem;
+  margin:20px 0;
+  text-align:center;
+  line-height:1.5;
+}
+
+#answers{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+button{
+  padding:16px;
+  font-size:1rem;
+  border-radius:12px;
+  border:none;
+  background:#2f80ed;
+  color:white;
+  cursor:pointer;
+}
+
+button:active{
+  transform:scale(0.98);
+}
+
+
+.result-box{
+  text-align:center;
+}
+
+.result-box img{
+  width:70%;
+  max-width:260px;
+  margin:16px 0;
+  border-radius:12px;
+}
+
+.result-images{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.result-images img{
+  width:45%;
+  max-width:160px;
+  border-radius:12px;
+}
+</style></head>
 <body>
 
-<h2>🎓 신입생 풍물 MBTI</h2>
+<h2>🎓 한성대 탈 풍물 MBTI</h2>
+
+!!어울리는 악기를 찾아드려요!!
 
 <div id="question"></div>
 <div id="answers"></div>
@@ -108,7 +173,8 @@ function showQuestion() {
   });
 }
 
-function showResult() {
+
+  function showResult() {
   let maxType = "";
   let maxScore = -1;
 
@@ -135,10 +201,31 @@ function showResult() {
     sogo: "밝고 표현력이 좋은 타입"
   };
 
-  qDiv.innerHTML = "🥁 당신에게 어울리는 악기는<br><h2>" + name[maxType] + "</h2>";
-  aDiv.innerHTML = desc[maxType];
-}
+  const images = {
+    kkwaeng: ["img/kkwaeng1.jpg", "img/kkwaeng2.jpg"],
+    janggu: ["img/janggu1.jpg", "img/janggu2.jpg"],
+    buk: ["img/buk1.jpg", "img/buk2.jpg"],
+    jing: ["img/jing1.jpg"],
+    sogo: ["img/sogo1.jpg", "img/sogo2.jpg"]
+  };
 
+  const imgs = images[maxType]
+    .map(src => `<img src="${src}" alt="${name[maxType]}">`)
+    .join("");
+
+  qDiv.innerHTML = `
+    <div class="result-box">
+      <h3>🥁 당신에게 어울리는 악기</h3>
+      <h2>${name[maxType]}</h2>
+      <div class="result-images">
+        ${imgs}
+      </div>
+      <p>${desc[maxType]}</p>
+    </div>
+  `;
+
+  aDiv.innerHTML = "";
+}
 showQuestion();
 </script>
 
