@@ -12,7 +12,7 @@
 body{
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
   margin:0;
-  padding:20px 16px 32px;
+  padding:10px 16px 32px;
   background: linear-gradient(180deg,#eaf2ff,#ffffff);
 }
 
@@ -99,11 +99,108 @@ button:active{
   background:#4c7dff;
   transition:width 0.3s;
 }
+.question-area{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+
+  max-width:600px;
+  margin:0 auto;
+  background:white;
+  border-radius:18px;
+  padding:14px 14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+
+#question{
+  flex:1;
+  font-size:1.15rem;
+  line-height:1.6;
+  font-weight:600;
+  text-align:left;
+}
+
+.mascot{
+  width:78px;
+  flex-shrink:0;
+}
+
+#question{
+  position: relative;
+  background: #E9F3FF;   /* 말풍선 색 */
+  border-radius: 18px;
+  padding: 16px 18px;
+  line-height: 1.6;
+  font-size: 1.15rem;
+  font-weight: 600;
+
+  border: 2px solid #2f80ed;
+}
+
+/* 말풍선 꼬리 (테두리 포함) */
+#question::after{
+  content:"";
+  position:absolute;
+  right:-18px;
+  top:38px;
+
+  width:0;
+  height:0;
+
+  border-top:10px solid transparent;
+  border-bottom:10px solid transparent;
+  border-left:18px solid #2f80ed;
+}
+
+/* 안쪽 색 꼬리 */
+#question::before{
+  content:"";
+  position:absolute;
+  right:-15px;
+  top:40px;
+
+  width:0;
+  height:0;
+
+  border-top:8px solid transparent;
+  border-bottom:8px solid transparent;
+  border-left:15px solid #E9F3FF;
+
+
+}
+#startScreen{
+  position:fixed;
+  inset:0;
+  background: linear-gradient(180deg,#eaf2ff,#ffffff);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  z-index:999;
+  text-align:center;
+  padding:20px;
+}
+
+#startScreen p{
+  line-height:1.5;
+  color:#444;
+}
 </style></head>
 <body>
+<div id="startScreen">
+  <h2>🎓 한성대 탈 풍물 MBTI</h2>
+  <p>
+질문에 답하면<br>
+내 성격에 맞는 풍물 악기가 나와요!
+</p>
+  <button id="startBtn">시작하기 🎲</button>
+</div>
 
 <h2>🎓 한성대 탈 풍물 MBTI</h2>
-!!어울리는 악기를 찾아드려요!!
+상상부기와 함께 나와 어울리는 악기 찾기!!
 <div id="progressText"></div>
 <div class="progress-bar">
   <div class="progress-fill" id="progressFill"></div>
@@ -111,7 +208,11 @@ button:active{
 
 
 
-<div id="question"></div>
+<div class="question-area">
+  <div id="question"></div>
+  <img src="img/sangsangboogi.png" class="mascot">
+</div>
+
 <div id="answers"></div>
 
 <script>
@@ -216,7 +317,10 @@ progressFill.style.width =
 }
 
 
-  function showResult() {
+ function showResult() {
+
+  document.querySelector(".question-area").style.display = "none";
+
   let maxType = "";
   let maxScore = -1;
 
@@ -247,7 +351,7 @@ progressFill.style.width =
     kkwaeng: ["img/kkwaeng1.jpg", "img/kkwaeng2.jpg"],
     janggu: ["img/janggu1.jpg", "img/janggu2.jpg"],
     buk: ["img/buk1.jpg", "img/buk2.jpg"],
-    jing: ["img/jing1.jpg"],
+   jing: ["img/jing1.jpg?test=1"],
     sogo: ["img/sogo1.jpg", "img/sogo2.jpg"]
   };
 
@@ -255,7 +359,7 @@ progressFill.style.width =
     .map(src => `<img src="${src}" alt="${name[maxType]}">`)
     .join("");
 
-  qDiv.innerHTML = `
+  aDiv.innerHTML = `
     <div class="result-box">
       <h3>🥁 당신에게 어울리는 악기</h3>
       <h2>${name[maxType]}</h2>
@@ -263,20 +367,16 @@ progressFill.style.width =
         ${imgs}
       </div>
       <p>${desc[maxType]}</p>
-    </div>
-  `;
+    </div> `;
 
-  aDiv.innerHTML = "";
-
-progressText.style.display = "none";
-document.querySelector(".progress-bar").style.display = "none";
-
+  progressText.style.display = "none";
+  document.querySelector(".progress-bar").style.display = "none";
 }
 showQuestion();
+document.getElementById("startBtn").onclick = () => {
+  document.getElementById("startScreen").style.display = "none";
+};
 </script>
 
 </body>
 </html>
-
-
-
