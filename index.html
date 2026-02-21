@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>풍물 MBTI</title>
+<style>
+body { font-family: sans-serif; max-width: 600px; margin: auto; }
+button { display: block; margin: 8px 0; padding: 10px; width: 100%; }
+</style>
+</head>
+<body>
+
+<h2>🎓 신입생 풍물 MBTI</h2>
+
+<div id="question"></div>
+<div id="answers"></div>
+
+<script>
+const questions = [
+  {
+    q: "1. 처음 만난 사람들 사이에서 나는",
+    a: [
+      { text: "먼저 말 걸고 분위기를 만든다", type: "kkwaeng" },
+      { text: "웃으면서 자연스럽게 어울린다", type: "sogo" }
+    ]
+  },
+  {
+    q: "2. 조별과제를 하게 되었을 때 나는 보통",
+    a: [
+      { text: "역할을 나누고 정리를 맡는다", type: "jing" },
+      { text: "사람들 사이에서 의견을 조율한다", type: "janggu" }
+    ]
+  },
+  {
+    q: "3. 새로운 환경에 들어가면",
+    a: [
+      { text: "일단 해보면서 익힌다", type: "buk" },
+      { text: "먼저 전체 흐름을 본다", type: "jing" }
+    ]
+  },
+  {
+    q: "4. 처음 해보는 활동을 할 때",
+    a: [
+      { text: "재미있으면 적극적으로 표현한다", type: "sogo" },
+      { text: "조용히 집중해서 따라간다", type: "buk" }
+    ]
+  },
+  {
+    q: "5. 사람들 앞에 서야 한다면",
+    a: [
+      { text: "부담돼도 해보는 편이다", type: "kkwaeng" },
+      { text: "뒤에서 돕는 게 편하다", type: "janggu" }
+    ]
+  },
+  {
+    q: "6. 친구가 힘들어할 때",
+    a: [
+      { text: "옆에서 이야기를 들어준다", type: "janggu" },
+      { text: "분위기를 바꿔 주려고 한다", type: "sogo" }
+    ]
+  },
+  {
+    q: "7. 해야 할 일이 많을 때",
+    a: [
+      { text: "하나씩 정리해서 한다", type: "jing" },
+      { text: "일단 할 수 있는 것부터 한다", type: "buk" }
+    ]
+  },
+  {
+    q: "8. 대학 생활에서 가장 중요한 것은",
+    a: [
+      { text: "사람들과 즐겁게 지내는 것", type: "sogo" },
+      { text: "내 역할을 잘 해내는 것", type: "kkwaeng" }
+    ]
+  }
+];
+
+let index = 0;
+const score = {
+  kkwaeng: 0,
+  janggu: 0,
+  buk: 0,
+  jing: 0,
+  sogo: 0
+};
+
+const qDiv = document.getElementById("question");
+const aDiv = document.getElementById("answers");
+
+function showQuestion() {
+  if (index >= questions.length) {
+    showResult();
+    return;
+  }
+
+  qDiv.innerText = questions[index].q;
+  aDiv.innerHTML = "";
+
+  questions[index].a.forEach(ans => {
+    const btn = document.createElement("button");
+    btn.innerText = ans.text;
+    btn.onclick = () => {
+      score[ans.type]++;
+      index++;
+      showQuestion();
+    };
+    aDiv.appendChild(btn);
+  });
+}
+
+function showResult() {
+  let maxType = "";
+  let maxScore = -1;
+
+  for (let key in score) {
+    if (score[key] > maxScore) {
+      maxScore = score[key];
+      maxType = key;
+    }
+  }
+
+  const name = {
+    kkwaeng: "꽹과리",
+    janggu: "장구",
+    buk: "북",
+    jing: "징",
+    sogo: "소고"
+  };
+
+  const desc = {
+    kkwaeng: "도전적이고 존재감이 있는 타입",
+    janggu: "사람 사이를 잘 이어주는 타입",
+    buk: "묵묵히 자기 역할을 해내는 타입",
+    jing: "흐름과 정리를 잘 보는 타입",
+    sogo: "밝고 표현력이 좋은 타입"
+  };
+
+  qDiv.innerHTML = "🥁 당신에게 어울리는 악기는<br><h2>" + name[maxType] + "</h2>";
+  aDiv.innerHTML = desc[maxType];
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
+
+
+
